@@ -10,7 +10,7 @@ var data = [
 ].map(new_data);
 
 var layout = {
-	title: {text: 'User Zoom Persists<br>When uirevision Unchanged'},
+	title: {text: 'User Zoom Resets<br>When uirevision Changes'},
 	uirevision:'true',
 	xaxis: {autorange: true},
 	yaxis: {autorange: true}
@@ -29,9 +29,10 @@ var interval = setInterval(function() {
 	layout.xaxis.autorange = true;
 	layout.yaxis.autorange = true;
 
-	// not changing uirevision will ensure that user interactions are unchanged
-	// layout.uirevision = rand();
+	// a new random number should ensure that uirevision will be different
+	// and so the graph will autorange after the Plotly.react
+	layout.uirevision = rand();
 
 	Plotly.react('myDiv', data, layout);
-	if(cnt === 100) clearInterval(interval);
+  if(cnt === 100) clearInterval(interval);
 }, 2500);
