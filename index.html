@@ -1,38 +1,50 @@
-const rand = () => Math.random();
-var x = [1, 2, 3, 4, 5];
-const new_data = (trace) => Object.assign(trace, {y: x.map(rand)});
-
-// add random data to three line traces
-var data = [
-	{mode:'lines', line: {color: "#b55400"}},
-	{mode: 'lines', line: {color: "#393e46"}},
-	{mode: 'lines', line: {color: "#222831"}}
-].map(new_data);
-
-var layout = {
-	title: {text: 'User Zoom Resets<br>When uirevision Changes'},
-	uirevision:'true',
-	xaxis: {autorange: true},
-	yaxis: {autorange: true}
-};
-
-Plotly.react('myDiv', data, layout);
-
-var myPlot = document.getElementById('myDiv');
-
-var cnt = 0;
-var interval = setInterval(function() {
-	data = data.map(new_data);
-
-	// user interaction will mutate layout and set autorange to false
-	// so we need to reset it to true
-	layout.xaxis.autorange = true;
-	layout.yaxis.autorange = true;
-
-	// a new random number should ensure that uirevision will be different
-	// and so the graph will autorange after the Plotly.react
-	layout.uirevision = rand();
-
-	Plotly.react('myDiv', data, layout);
-  if(cnt === 100) clearInterval(interval);
-}, 2500);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Points Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        canvas {
+            max-width: 600px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <h2>Data Points Graph</h2>
+    <canvas id="myChart"></canvas>
+    <script>
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const data = {
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            datasets: [{
+                label: 'Sample Data',
+                data: [10, 25, 15, 30, 20, 40],
+                borderColor: 'blue',
+                backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                borderWidth: 2
+            }]
+        };
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true
+                    }
+                }
+            }
+        };
+        new Chart(ctx, config);
+    </script>
+</body>
+</html>
